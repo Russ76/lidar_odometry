@@ -158,10 +158,13 @@ KittiPlayerResult KittiPlayer::run(const KittiPlayerConfig& config) {
             
             // Generate filename with sequence and method: e.g., "07_PKO.txt"
             std::string seq_method_filename = sys_config.kitti_sequence + "_" + sys_config.scale_method + ".txt";
-            std::string kitti_output_path = sys_config.output_directory + "/" + seq_method_filename;
             
-            // Ensure output directory exists
-            std::filesystem::create_directories(sys_config.output_directory);
+            // Create output directory: Result/07/
+            std::string seq_output_dir = sys_config.output_directory + "/" + sys_config.kitti_sequence;
+            std::filesystem::create_directories(seq_output_dir);
+            
+            // Save trajectory in sequence directory: Result/07/07_PKO.txt
+            std::string kitti_output_path = seq_output_dir + "/" + seq_method_filename;
             
             save_trajectory_kitti_format(context, kitti_output_path);
             
@@ -204,6 +207,23 @@ KittiPlayerResult KittiPlayer::run(const KittiPlayerConfig& config) {
             spdlog::info(" Average Frame Rate: {:.1f}fps", fps);
             
            
+        }
+        
+        // Save final map if enabled
+        const auto& sys_config = util::config();
+        if (sys_config.output_save_map && m_estimator) {
+            // Create output directory: Result/07/
+            std::string seq_output_dir = sys_config.output_directory + "/" + sys_config.kitti_sequence;
+            std::filesystem::create_directories(seq_output_dir);
+            
+            // Save map in sequence directory: Result/07/map.ply
+            std::string map_output_path = seq_output_dir + "/map.ply";
+            spdlog::info("[KittiPlayer] Saving final map to {}...", map_output_path);
+            if (m_estimator->save_map_to_ply(map_output_path, sys_config.output_map_voxel_size)) {
+                spdlog::info("[KittiPlayer] Map saved successfully!");
+            } else {
+                spdlog::error("[KittiPlayer] Failed to save map");
+            }
         }
         
         // Wait for viewer finish if enabled

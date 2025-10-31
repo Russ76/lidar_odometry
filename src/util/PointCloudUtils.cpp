@@ -143,5 +143,45 @@ void copy_point_cloud(const PointCloud::ConstPtr& input, PointCloud::Ptr& output
     }
 }
 
+bool save_point_cloud_ply(const std::string& filename, const PointCloud::ConstPtr& cloud) {
+    if (!cloud || cloud->empty()) {
+        spdlog::error("Cannot save empty point cloud to PLY: {}", filename);
+        return false;
+    }
+    
+    // Create directory if it doesn't exist
+    std::filesystem::path file_path(filename);
+    std::filesystem::create_directories(file_path.parent_path());
+    
+    // Open binary file for writing
+    std::ofstream file(filename, std::ios::binary);
+    if (!file.is_open()) {
+        spdlog::error("Failed to open PLY file for writing: {}", filename);
+        return false;
+    }
+    
+    // Write PLY header
+    file << "ply\n";
+    file << "format binary_little_endian 1.0\n";
+    file << "element vertex " << cloud->size() << "\n";
+    file << "property float x\n";
+    file << "property float y\n";
+    file << "property float z\n";
+    file << "end_header\n";
+    
+    // Write point data in binary format
+    for (size_t i = 0; i < cloud->size(); ++i) {
+        const auto& point = (*cloud)[i];
+        file.write(reinterpret_cast<const char*>(&point.x), sizeof(float));
+        file.write(reinterpret_cast<const char*>(&point.y), sizeof(float));
+        file.write(reinterpret_cast<const char*>(&point.z), sizeof(float));
+    }
+    
+    file.close();
+    spdlog::info("Successfully saved {} points to PLY: {}", cloud->size(), filename);
+    
+    return true;
+}
+
 } // namespace util
 } // namespace lidar_odometry

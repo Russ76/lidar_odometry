@@ -154,6 +154,14 @@ public:
      * @return Map of keyframe ID to optimized pose (as Eigen::Matrix4f)
      */
     std::map<int, Eigen::Matrix4f> get_optimized_trajectory() const;
+    
+    /**
+     * @brief Save final map to PLY file
+     * @param output_path Output file path (e.g., "/path/to/map.ply")
+     * @param voxel_size Voxel size for downsampling (0 = no downsampling)
+     * @return True if save successful
+     */
+    bool save_map_to_ply(const std::string& output_path, float voxel_size = 0.2f);
 
 private:
     // ===== Internal Processing =====

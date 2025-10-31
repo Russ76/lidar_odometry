@@ -342,6 +342,14 @@ bool ConfigManager::load_from_file(const std::string& config_file) {
             m_config.pgo_loop_rotation_noise = std::stod(config_map["pose_graph_optimization.loop_rotation_noise"]);
         }
         
+        // Output settings
+        if (config_map.find("output.save_map") != config_map.end()) {
+            m_config.output_save_map = (config_map["output.save_map"] == "true");
+        }
+        if (config_map.find("output.map_voxel_size") != config_map.end()) {
+            m_config.output_map_voxel_size = std::stof(config_map["output.map_voxel_size"]);
+        }
+        
         return true;
         
     } catch (const std::exception& e) {

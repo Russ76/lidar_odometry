@@ -126,6 +126,10 @@ struct SystemConfig {
     double pgo_loop_translation_noise = 1.0;        ///< Loop closure constraint translation noise (lower = more trust)
     double pgo_loop_rotation_noise = 1.0;           ///< Loop closure constraint rotation noise (lower = more trust)
     
+    // ===== Output settings =====
+    bool output_save_map = false;                   ///< Save final map as PLY file
+    float output_map_voxel_size = 0.2f;             ///< Voxel size for final map downsampling
+    
     SystemConfig() = default;
 };
 

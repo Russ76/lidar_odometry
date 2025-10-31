@@ -110,6 +110,8 @@ output:
   trajectory_format: "kitti"  # "kitti" or "tum"
   print_final_errors: true    # Print translation and rotation errors at the end
   error_summary_format: "clean"  # "clean" or "detailed"
+  save_map: true              # Save final map as PLY file
+  map_voxel_size: 0.2         # Voxel size for final map downsampling
 
 
 

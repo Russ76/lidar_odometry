@@ -330,6 +330,14 @@ void transform_point_cloud(const PointCloud::ConstPtr& input,
  */
 void copy_point_cloud(const PointCloud::ConstPtr& input, PointCloud::Ptr& output);
 
+/**
+ * @brief Save point cloud to PLY binary format
+ * @param filename Output file path
+ * @param cloud Point cloud to save
+ * @return True if successful
+ */
+bool save_point_cloud_ply(const std::string& filename, const PointCloud::ConstPtr& cloud);
+
 // ===== Spatial Data Structures and Filters =====
 
 /**

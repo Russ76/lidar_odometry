@@ -1358,5 +1358,64 @@ void Estimator::transform_current_keyframe_map(const SE3f& correction) {
     current_kf->build_local_map_kdtree();
 }
 
+bool Estimator::save_map_to_ply(const std::string& output_path, float voxel_size) {
+    std::lock_guard<std::mutex> lock(m_keyframes_mutex);
+    
+    if (m_keyframes.empty()) {
+        spdlog::warn("[Estimator] No keyframes to save");
+        return false;
+    }
+    
+    spdlog::info("[Estimator] Building final map from {} keyframes...", m_keyframes.size());
+    
+    // Accumulate all keyframe feature clouds in world coordinates
+    util::PointCloudPtr accumulated_map = std::make_shared<util::PointCloud>();
+    
+    for (const auto& kf : m_keyframes) {
+        auto feature_cloud = kf->get_feature_cloud();
+        if (!feature_cloud || feature_cloud->empty()) {
+            continue;
+        }
+        
+        // Transform feature cloud to world coordinates
+        SE3f pose = kf->get_pose();
+        util::PointCloudPtr transformed_cloud = std::make_shared<util::PointCloud>();
+        util::transform_point_cloud(feature_cloud, transformed_cloud, pose.matrix());
+        
+        // Accumulate
+        *accumulated_map += *transformed_cloud;
+    }
+    
+    if (accumulated_map->empty()) {
+        spdlog::error("[Estimator] No points in accumulated map");
+        return false;
+    }
+    
+    spdlog::info("[Estimator] Accumulated map: {} points", accumulated_map->size());
+    
+    // Downsample if voxel_size > 0
+    util::PointCloudPtr final_map = accumulated_map;
+    if (voxel_size > 0.0f) {
+        util::VoxelGrid voxel_filter;
+        voxel_filter.setLeafSize(voxel_size);
+        voxel_filter.setInputCloud(accumulated_map);
+        
+        final_map = std::make_shared<util::PointCloud>();
+        voxel_filter.filter(*final_map);
+        
+        spdlog::info("[Estimator] Downsampled map: {} -> {} points (voxel_size={})", 
+                     accumulated_map->size(), final_map->size(), voxel_size);
+    }
+    
+    // Save as PLY binary format
+    if (!util::save_point_cloud_ply(output_path, final_map)) {
+        spdlog::error("[Estimator] Failed to save map to {}", output_path);
+        return false;
+    }
+    
+    spdlog::info("[Estimator] Saved final map to {} ({} points)", output_path, final_map->size());
+    return true;
+}
+
 } // namespace processing
 } // namespace lidar_odometry
