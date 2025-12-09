@@ -1,4 +1,4 @@
-# LiDAR SLAM
+# Fast LiDAR SLAM
 
 A high-performance real-time LiDAR SLAM system (~400 FPS on KITTI).
 
