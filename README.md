@@ -2,7 +2,8 @@
 
 A high-performance real-time LiDAR SLAM system (~400 FPS on KITTI).
 
-[![Demo](https://img.youtube.com/vi/FANz9mhIAQQ/0.jpg)](https://www.youtube.com/watch?v=FANz9mhIAQQ)
+
+[![Demo](https://img.youtube.com/vi/eBdYP55IMEY/0.jpg)](https://www.youtube.com/watch?v=eBdYP55IMEY)
 
 ## Features
 
