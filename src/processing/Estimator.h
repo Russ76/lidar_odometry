@@ -12,15 +12,10 @@
 #pragma once
 
 #include "../util/MathUtils.h"
-#include "../util/PointCloudUtils.h"
 #include "../util/ConfigUtils.h"
-#include "../database/LidarFrame.h"
-#include "../optimization/AdaptiveMEstimator.h"
-#include "../optimization/PoseGraphOptimizer.h"
-#include "../optimization/IterativeClosestPointOptimizer.h"
-#include "LoopClosureDetector.h"
-#include "../util/MathUtils.h"
+#include "../util/PointCloudUtils.h"
 #include "../database/VoxelMap.h"
+#include "LoopClosureDetector.h"
 
 #include <memory>
 #include <vector>
@@ -32,6 +27,19 @@
 #include <atomic>
 #include <optional>
 #include <chrono>
+
+// Forward declarations
+namespace lidar_slam {
+namespace database {
+class LidarFrame;
+}
+namespace optimization {
+class AdaptiveMEstimator;
+class PoseGraphOptimizer;
+class IterativeClosestPointOptimizer;
+struct ICPConfig;
+}
+}
 
 namespace lidar_slam {
 namespace processing {

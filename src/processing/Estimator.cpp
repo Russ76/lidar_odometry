@@ -11,6 +11,13 @@
 
 #include "Estimator.h"
 #include "../util/MathUtils.h"
+#include "../util/PointCloudUtils.h"
+#include "../database/LidarFrame.h"
+#include "../database/VoxelMap.h"
+#include "../optimization/AdaptiveMEstimator.h"
+#include "../optimization/PoseGraphOptimizer.h"
+#include "../optimization/IterativeClosestPointOptimizer.h"
+#include "LoopClosureDetector.h"
 #include "util/LogUtils.h"
 #include <algorithm>
 #include <chrono>

@@ -10,6 +10,9 @@
  */
 
 #include "LoopClosureDetector.h"
+#include "../database/LidarFrame.h"
+#include "../util/PointCloudUtils.h"
+#include "../util/LogUtils.h"
 #include <algorithm>
 #include <chrono>
 

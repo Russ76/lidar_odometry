@@ -11,16 +11,19 @@
 
 #pragma once
 
-#include "../database/LidarFrame.h"
-#include "../util/MathUtils.h"
-#include "../util/PointCloudUtils.h"
-#include "../util/PointCloudUtils.h"
 #include "../../thirdparty/LidarIris/LidarIris.h"
 
 #include <memory>
 #include <vector>
 #include <mutex>
-#include "util/LogUtils.h"
+#include <Eigen/Dense>
+
+// Forward declarations
+namespace lidar_slam {
+namespace database {
+class LidarFrame;
+}
+}
 
 namespace lidar_slam {
 namespace processing {

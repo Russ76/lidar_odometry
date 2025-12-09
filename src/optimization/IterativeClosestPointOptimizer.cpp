@@ -12,6 +12,8 @@
 #include "IterativeClosestPointOptimizer.h"
 #include "../util/MathUtils.h"
 #include "../util/PointCloudUtils.h"
+#include "../database/LidarFrame.h"
+#include "../database/VoxelMap.h"
 #include "util/LogUtils.h"
 #include <chrono>
 #include <numeric>

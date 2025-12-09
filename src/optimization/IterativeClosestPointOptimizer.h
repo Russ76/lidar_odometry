@@ -13,13 +13,31 @@
 #pragma once
 
 #include "../util/MathUtils.h"
-#include "../util/PointCloudUtils.h"
-#include "../database/LidarFrame.h"
-#include "../database/VoxelMap.h"
 #include "AdaptiveMEstimator.h"
 
 #include <memory>
 #include <vector>
+
+// Forward declarations
+namespace lidar_slam {
+namespace database {
+class LidarFrame;
+}
+namespace map {
+class VoxelMap;
+}
+namespace util {
+class PointCloud;
+}
+}
+
+// Type alias for PointCloud pointer (defined in PointCloudUtils.h)
+namespace lidar_slam {
+namespace util {
+using PointCloudPtr = std::shared_ptr<PointCloud>;
+using PointCloudConstPtr = std::shared_ptr<const PointCloud>;
+}
+}
 
 namespace lidar_slam {
 namespace optimization {

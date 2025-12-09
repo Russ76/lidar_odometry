@@ -25,8 +25,6 @@
 #pragma once
 
 #include "../util/MathUtils.h"
-#include "../util/PointCloudUtils.h"
-#include "../util/MathUtils.h"
 #include <Eigen/Sparse>
 #include <memory>
 #include <vector>
